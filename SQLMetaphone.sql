@@ -34,7 +34,7 @@ SELECT @String = UPPER(LTRIM(COALESCE(@String, ''))); --trim and upper case
 SELECT @where= PATINDEX ('%[^A-Z]%',@String COLLATE Latin1_General_CI_AI ) 
 WHILE  @where>0 --strip out all non-alphabetic characters!
 	BEGIN
-	SELECT @String=STUFF(@string,@where,1,'')
+	SELECT @String=STUFF(@String,@where,1,'')
 	SELECT @where=PATINDEX ('%[^A-Z]%',@String COLLATE Latin1_General_CI_AI ) 
     END
 IF(LEN(@String) < 2) RETURN  @String
@@ -128,10 +128,10 @@ WHILE((LEN(@Metaphone) <= 8) AND (@ii <= @Len))
     BEGIN
   SELECT @silent = 
     CASE WHEN (@Next = 'H') AND (@Following IN ('A','E','I','O','U'))
-	AND (@ii > 1) AND (((@ii+1) = @Len) OR ((@Next = 'n') AND
+	AND (@ii > 1) AND (((@ii+1) = @Len) OR ((@Next = 'N') AND
     (@Following = 'E') AND SUBSTRING(@String,@ii+3,1) = 'D') AND ((@ii+3) = @Len)) 
 -- Terminal -gned 
-  AND (@Previous = 'i') AND (@Next = 'n')
+  AND (@Previous = 'I') AND (@Next = 'N')
   THEN 1 
  -- if not start and near -end or -gned.) 
   WHEN (@ii > 1) AND (@Previous = 'D')-- gnuw
@@ -183,7 +183,7 @@ WHILE((LEN(@Metaphone) <= 8) AND (@ii <= @Len))
     SELECT @Metaphone = @Metaphone + 
 	  CASE 
 		WHEN(@Next = 'H')
-		 OR( (@ii> 1) AND (@Next = 'i') 
+		 OR( (@ii> 1) AND (@Next = 'I') 
 		  AND (@Following IN ( 'O', 'A' ) )
 		  ) 
 		THEN 'X' ELSE 'S' END;
@@ -196,7 +196,7 @@ to '0'. Drop 'T' if followed by 'CH'.*/
       + CASE 
 	    WHEN(@ii = 1) AND (@Next = 'H') AND (@Following = 'O') 
 	       THEN 'T' -- Initial Tho- }
-        WHEN(@ii > 1) AND (@Next = 'i') 
+        WHEN(@ii > 1) AND (@Next = 'I') 
 		     AND (@Following IN ( 'O', 'A' )) 
 		  THEN 'X'
         WHEN(@Next = 'H') THEN '0'
@@ -279,7 +279,7 @@ UNION ALL SELECT dbo.Metaphone ('dispensations'),'dispensations','TSPNSXNS'
 UNION ALL SELECT dbo.Metaphone ('downfall'),'downfall','TNFL'
 UNION ALL SELECT dbo.Metaphone ('naturalising'),'naturalising','NTRLSNK')k
 
-WHERE attempt <> canonical
+WHERE Attempt <> canonical
 IF @@RowCount>0 RAISERROR( 'As you can see, there was a problem somewhere',16,1)
 
   
